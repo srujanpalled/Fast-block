@@ -9,21 +9,21 @@ export type BlockShape = {
   id: string
 }
 
-export type GameState = "menu" | "playing" | "gameover"
+export type GameState = "menu" | "playing" | "paused" | "gameover"
 
 export const GRID_SIZE = 9
 export const TIMER_DURATION = 30
 export const MAX_HEARTS = 3
 
 export const BLOCK_COLORS = [
-  "#22c55e", // green
-  "#3b82f6", // blue
-  "#f59e0b", // amber
-  "#ef4444", // red
-  "#ec4899", // pink
-  "#8b5cf6", // violet (only on blocks, not the theme)
-  "#06b6d4", // cyan
-  "#f97316", // orange
+  "#20e59b", // Mint Electric
+  "#1d7afc", // Azure Core
+  "#fbbb11", // Amber Flare
+  "#ff355e", // Crimson Spark
+  "#f72585", // Neon Magenta
+  "#7b2cbf", // Deep Amethyst
+  "#00f5d4", // Fluor Cyan
+  "#ff7900", // Tangerine Burst
 ]
 
 export const BLOCK_TEMPLATES: boolean[][][] = [

@@ -150,7 +150,6 @@ export function useGameLogic() {
 
   const startTimer = useCallback(() => {
     clearTimer()
-    setTimeLeft(TIMER_DURATION)
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -160,6 +159,20 @@ export function useGameLogic() {
       })
     }, 1000)
   }, [clearTimer])
+
+  const togglePause = useCallback(() => {
+    setGameState((prev) => {
+      if (prev === "playing") {
+        clearTimer()
+        return "paused"
+      }
+      if (prev === "paused") {
+        startTimer()
+        return "playing"
+      }
+      return prev
+    })
+  }, [clearTimer, startTimer])
 
   const generatePlayableOptions = useCallback(
     (currentGrid: CellState[][]) => {
@@ -193,6 +206,7 @@ export function useGameLogic() {
       } else {
         setHearts((prev) => prev - 1)
         setBlockOptions(generatePlayableOptions(grid))
+        setTimeLeft(TIMER_DURATION)
         startTimer()
       }
     }
@@ -231,11 +245,13 @@ export function useGameLogic() {
         if (newOptions.length === 0) {
           const freshOptions = generatePlayableOptions(clearedGrid)
           setBlockOptions(freshOptions)
+          setTimeLeft(TIMER_DURATION)
           startTimer()
         } else if (!canPlaceAnyBlock(newOptions, clearedGrid)) {
           // If remaining blocks can't be placed, give new playable options naturally
           const freshOptions = generatePlayableOptions(clearedGrid)
           setBlockOptions(freshOptions)
+          setTimeLeft(TIMER_DURATION)
           startTimer()
         } else {
           setBlockOptions(newOptions)
@@ -248,7 +264,7 @@ export function useGameLogic() {
 
       return true
     },
-    [blockOptions, canPlaceBlock, checkAndClearLines, startTimer, canPlaceAnyBlock, clearTimer, generatePlayableOptions]
+    [blockOptions, canPlaceBlock, checkAndClearLines, startTimer, canPlaceAnyBlock, generatePlayableOptions]
   )
 
   const startGame = useCallback(() => {
@@ -304,5 +320,6 @@ export function useGameLogic() {
     endGame,
     canPlaceBlock,
     setGameState,
+    togglePause,
   }
 }
